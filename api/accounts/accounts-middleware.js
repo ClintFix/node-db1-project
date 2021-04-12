@@ -8,8 +8,7 @@ exports.checkAccountPayload = (req, res, next) => {
   }
 
   switch(true) { 
-    case ( name == undefined || budget == undefined ):
-      console.log(budget)
+    case ( name === undefined || budget === undefined ):
       res.status(400).json({message: "name and budget are required"});
       break;
     case (typeof name !== "string"):
