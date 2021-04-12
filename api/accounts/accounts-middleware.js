@@ -8,9 +8,10 @@ exports.checkAccountPayload = (req, res, next) => {
   }
 
   switch(true) { 
-    case (!name || !budget):
-       res.status(400).json({message: "name and budget are required"});
-       break;
+    case ( name == undefined || budget == undefined ):
+      console.log(budget)
+      res.status(400).json({message: "name and budget are required"});
+      break;
     case (typeof name !== "string"):
       res.status(400).json({ message: `name of account must be a string.`});
       break;
@@ -35,7 +36,7 @@ exports.checkAccountNameUnique = async (req, res, next) => {
   if (typeof name === "string") {
       name = name.trim();
   }
-  
+
   const accounts = await Accounts.getAll();
   accounts.map(account => {
     if (account.name === name) {
