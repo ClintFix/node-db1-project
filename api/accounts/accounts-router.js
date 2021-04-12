@@ -19,24 +19,36 @@ router.get('/:id', checkAccountId, async (req, res,) => {
 
 router.post('/',checkAccountNameUnique, checkAccountPayload, async (req, res, next) => {
   try {
-    const newPost = await Accounts.create(req.body)
-    res.status(201).json(newPost)
+    const newPost = await Accounts.create(req.body);
+    res.status(201).json(newPost);
   }
   catch(err) {
     next(err);
   }
-})
+});
 
-router.put('/:id', checkAccountId, checkAccountNameUnique, checkAccountPayload, (req, res, next) => {
-  // DO YOUR MAGIC
+router.put('/:id', checkAccountId, checkAccountNameUnique, checkAccountPayload, async (req, res, next) => {
+  try {
+    const updatedPost = await Accounts.updateById(req.params.id, req.body);
+    res.status(200).json(updatedPost);
+  }
+  catch(err) {
+    next(err);
+  }
 });
 
 router.delete('/:id', checkAccountId, (req, res, next) => {
-  // DO YOUR MAGIC
-})
+  Accounts.deleteById(req.params.id)
+    .then(deletedPost => {
+      res.status(200).json(deletedPost);
+    })
+    .catch(err => {
+      next(err);
+    })
+});
 
 router.use((err, _, res, ) => {
-  res.status(500).json({ message: err.message, stack: err.stack })
-})
+  res.status(500).json({ message: err.message, stack: err.stack });
+});
 
 module.exports = router;
